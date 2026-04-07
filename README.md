@@ -7,15 +7,15 @@ A customizable status bar for [Claude Code](https://docs.anthropic.com/en/docs/c
 ## What it shows
 
 ```
-⎇ main | Claude Opus 4.6 | $0.1234 | Ctx: [████░░░░░░] 40% | 5h: 12% | 7d: 3%
+⎇ main | Claude Opus 4.6 | cost: $0.1234 | ctx: 40% | 5h: 12% | 7d: 3%
 ```
 
 | Field | Description |
 |-------|-------------|
-| `⎇ main` | Current git branch |
+| `⎇ main` | Current git branch (green) |
 | `Claude Opus 4.6` | Active model name |
-| `$0.1234` | Cumulative session cost (USD) |
-| `Ctx: [████░░░░░░] 40%` | Context window usage with color-coded progress bar |
+| `cost: $0.1234` | Cumulative session cost (USD) |
+| `ctx: 40%` | Context window usage (color-coded) |
 | `5h: 12%` | 5-hour rate limit usage (Pro/Max only) |
 | `7d: 3%` | 7-day rate limit usage (Pro/Max only) |
 
@@ -84,7 +84,6 @@ Edit `~/.claude/statusline.sh` to customize:
 
 - **Color thresholds**: Change the percentage values in the `if/elif` conditions
 - **Fields**: Add or remove sections in the final `printf`
-- **Progress bar style**: Modify the `█` and `░` characters or bar length
 
 ## License
 
