@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# Claude Code statusline script
+# Displays: model name | session cost | context usage bar | duration
+
+input=$(cat)
+
+# --- Model ---
+model=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
+
+# --- Context window usage (color-coded) ---
+# Green < 50% | Yellow 50-70% | Red > 70%
+GREEN=$(printf '\x1b[32m')
+YELLOW=$(printf '\x1b[33m')
+RED=$(printf '\x1b[1;31m')
+RESET=$(printf '\x1b[0m')
+
+used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+if [ -n "$used_pct" ]; then
+  pct_int=$(printf '%.0f' "$used_pct")
+  filled=$(( pct_int / 10 ))
+  empty=$(( 10 - filled ))
+
+  if [ "$pct_int" -ge 70 ]; then
+    color="$RED"
+    warn=" ⚠ 建議壓縮"
+  elif [ "$pct_int" -ge 50 ]; then
+    color="$YELLOW"
+    warn=""
+  else
+    color="$GREEN"
+    warn=""
+  fi
+
+  bar="${color}["
+  for i in $(seq 1 $filled); do bar="${bar}█"; done
+  for i in $(seq 1 $empty);  do bar="${bar}░"; done
+  bar="${bar}]${RESET}"
+  ctx_str="${bar} ${color}${pct_int}%${RESET}${warn}"
+else
+  ctx_str="[░░░░░░░░░░] --%"
+fi
+
+# --- Session cost (prefer direct field, fallback to token-based estimate) ---
+cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+if [ -n "$cost" ]; then
+  cost_str=$(printf '$%.4f' "$cost")
+else
+  # Fallback: estimate from tokens
+  total_in=$(echo "$input"  | jq -r '.context_window.total_input_tokens  // 0')
+  total_out=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
+  cost_str=$(echo "$total_in $total_out" | awk '{
+    cost = ($1/1000000)*15 + ($2/1000000)*75
+    printf "$%.4f", cost
+  }')
+fi
+
+# --- Git branch ---
+branch=$(echo "$input" | jq -r '.git.branch // empty')
+if [ -z "$branch" ]; then
+  branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+fi
+branch_str=""
+if [ -n "$branch" ]; then
+  branch_str="⎇ ${branch} | "
+fi
+
+# --- Rate limits (Pro/Max, color-coded numbers only) ---
+# Green < 50% | Yellow 50-90% | Red >= 90%
+rl5h=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+rl7d=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+rl_str=""
+if [ -n "$rl5h" ] || [ -n "$rl7d" ]; then
+  rl_parts=""
+  if [ -n "$rl5h" ]; then
+    rl5h_int=$(printf '%.0f' "$rl5h")
+    if [ "$rl5h_int" -ge 90 ]; then rl5c="$RED"
+    elif [ "$rl5h_int" -ge 50 ]; then rl5c="$YELLOW"
+    else rl5c="$GREEN"; fi
+    rl_parts="5h: ${rl5c}${rl5h_int}%${RESET}"
+  fi
+  if [ -n "$rl7d" ]; then
+    rl7d_int=$(printf '%.0f' "$rl7d")
+    if [ "$rl7d_int" -ge 90 ]; then rl7c="$RED"
+    elif [ "$rl7d_int" -ge 50 ]; then rl7c="$YELLOW"
+    else rl7c="$GREEN"; fi
+    rl_parts="${rl_parts:+$rl_parts | }7d: ${rl7c}${rl7d_int}%${RESET}"
+  fi
+  rl_str=" | ${rl_parts}"
+fi
+
+printf "%s%s | %s | Ctx: %s%s" "$branch_str" "$model" "$cost_str" "$ctx_str" "$rl_str"
