@@ -7,14 +7,14 @@
 ## 顯示內容
 
 ```
-⎇ main | Claude Opus 4.6 | cost: $0.1234 | ctx: 40% | 5h: 12% | 7d: 3%
+⎇ main | Claude Opus 4.6 | ~$1.23 | ctx: 40% | 5h: 12% | 7d: 3%
 ```
 
 | 欄位 | 說明 |
 |------|------|
 | `⎇ main` | 目前 git 分支（綠色）|
 | `Claude Opus 4.6` | 使用中的模型名稱 |
-| `cost: $0.1234` | 本次 session 累計費用（USD）|
+| `~$1.23` | 本次 session 估算費用（USD）|
 | `ctx: 40%` | Context window 使用率（帶顏色）|
 | `5h: 12%` | 5 小時速率限制使用率（僅 Pro/Max）|
 | `7d: 3%` | 7 天速率限制使用率（僅 Pro/Max）|

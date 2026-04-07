@@ -25,13 +25,13 @@ fi
 # --- Session cost ---
 cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
 if [ -n "$cost" ]; then
-  cost_str=$(printf '$%.4f' "$cost")
+  cost_str=$(printf '~$%.2f' "$cost")
 else
   total_in=$(echo "$input"  | jq -r '.context_window.total_input_tokens  // 0')
   total_out=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
   cost_str=$(echo "$total_in $total_out" | awk '{
     cost = ($1/1000000)*15 + ($2/1000000)*75
-    printf "$%.4f", cost
+    printf "~$%.2f", cost
   }')
 fi
 
@@ -75,4 +75,4 @@ if [ -n "$rl5h" ] || [ -n "$rl7d" ]; then
   rl_str=" | ${rl_parts}"
 fi
 
-printf "%s%s | cost: %s | ctx: %s%s" "$branch_str" "$model" "$cost_str" "$ctx_str" "$rl_str"
+printf "%s%s | %s | ctx: %s%s" "$branch_str" "$model" "$cost_str" "$ctx_str" "$rl_str"

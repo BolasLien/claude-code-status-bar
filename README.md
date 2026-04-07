@@ -7,14 +7,14 @@ A customizable status bar for [Claude Code](https://docs.anthropic.com/en/docs/c
 ## What it shows
 
 ```
-⎇ main | Claude Opus 4.6 | cost: $0.1234 | ctx: 40% | 5h: 12% | 7d: 3%
+⎇ main | Claude Opus 4.6 | ~$1.23 | ctx: 40% | 5h: 12% | 7d: 3%
 ```
 
 | Field | Description |
 |-------|-------------|
 | `⎇ main` | Current git branch (green) |
 | `Claude Opus 4.6` | Active model name |
-| `cost: $0.1234` | Cumulative session cost (USD) |
+| `~$1.23` | Estimated session cost (USD) |
 | `ctx: 40%` | Context window usage (color-coded) |
 | `5h: 12%` | 5-hour rate limit usage (Pro/Max only) |
 | `7d: 3%` | 7-day rate limit usage (Pro/Max only) |
