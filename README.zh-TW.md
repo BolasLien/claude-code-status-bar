@@ -1,4 +1,4 @@
-# claude-code-status-bar
+# claude-code-status-line
 
 [English README](README.md)
 
@@ -36,8 +36,8 @@
 ### 一鍵安裝
 
 ```bash
-git clone https://github.com/bolaslien/claude-code-status-bar.git
-cd claude-code-status-bar
+git clone https://github.com/bolaslien/claude-code-status-line.git
+cd claude-code-status-line
 ./install.sh
 ```
 

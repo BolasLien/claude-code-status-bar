@@ -1,4 +1,4 @@
-# claude-code-status-bar
+# claude-code-status-line
 
 [繁體中文版 README](README.zh-TW.md)
 
@@ -36,8 +36,8 @@ A customizable status bar for [Claude Code](https://docs.anthropic.com/en/docs/c
 ### One-line install
 
 ```bash
-git clone https://github.com/bolaslien/claude-code-status-bar.git
-cd claude-code-status-bar
+git clone https://github.com/bolaslien/claude-code-status-line.git
+cd claude-code-status-line
 ./install.sh
 ```
 
