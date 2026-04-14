@@ -6,6 +6,8 @@ A customizable status bar for [Claude Code](https://docs.anthropic.com/en/docs/c
 
 ## What it shows
 
+![Status line preview](docs/preview.png)
+
 ```
 ⎇ main | Claude Opus 4.6 | ~$1.23 | ctx: 40% | 5h: 12% | 7d: 3%
 ~/path/to/project

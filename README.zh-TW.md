@@ -6,6 +6,8 @@
 
 ## 顯示內容
 
+![狀態列預覽](docs/preview.png)
+
 ```
 ⎇ main | Claude Opus 4.6 | ~$1.23 | ctx: 40% | 5h: 12% | 7d: 3%
 ~/path/to/project
